@@ -1,0 +1,67 @@
+package com.example.bg.service;
+
+import com.example.bg.Res.PrismaRes;
+import com.example.bg.model.UserCredit;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class UserCreditService {
+
+    private final PrismaRes prismaRes;
+
+    public UserCreditService(PrismaRes prismaRes) {
+        this.prismaRes = prismaRes;
+    }
+
+    // 1️⃣ Create user with 10 credits
+    @Transactional
+    public void createUserIfNotExists(String clerkUserId) {
+        prismaRes.findByClerkUserId(clerkUserId)
+                .orElseGet(() -> {
+                    UserCredit user = new UserCredit();
+                    user.setClerkUserId(clerkUserId);
+                    user.setCredits(10);
+                    return prismaRes.save(user);
+                });
+    }
+
+    // 2️⃣ Decrement credit
+    @Transactional
+    public void decrementCredit(String clerkUserId) {
+        UserCredit user = prismaRes.findByClerkUserId(clerkUserId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (user.getCredits() <= 0) {
+            throw new RuntimeException("No credits left");
+        }
+
+        user.setCredits(user.getCredits() - 1);
+        prismaRes.save(user);
+    }
+
+    // 3️⃣ Increment credits
+    @Transactional
+    public void addCredits(String clerkUserId, int amount) {
+        UserCredit user = prismaRes.findByClerkUserId(clerkUserId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setCredits(user.getCredits() + amount);
+        prismaRes.save(user);
+    }
+
+    // 4️⃣ Get credits
+    @Transactional
+    public int getCredits(String clerkUserId) {
+        UserCredit user = prismaRes.findByClerkUserId(clerkUserId)
+                .orElseGet(() -> {
+                    UserCredit newUser = new UserCredit();
+                    newUser.setClerkUserId(clerkUserId);
+                    newUser.setCredits(5);
+                    return prismaRes.save(newUser);
+                });
+
+        return user.getCredits();
+    }
+
+}
