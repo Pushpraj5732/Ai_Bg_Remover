@@ -11,6 +11,7 @@ const Home = () => {
   const [file, setFile] = useState(null);
   const [resultUrl, setResultUrl] = useState(null);
   const [loading, setLoading] = useState(false);
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   // ✅ called when user selects image
   const handleFileChange = async (e) => {
@@ -31,7 +32,7 @@ const Home = () => {
       formData.append("image", imageFile);
       formData.append("clerkUserId", user.id);
 
-      const res = await fetch("http://localhost:8080/api/bg/remove", {
+      const res = await fetch(`${API_BASE_URL}/api/bg/remove`, {
         method: "POST",
         body: formData,
       });

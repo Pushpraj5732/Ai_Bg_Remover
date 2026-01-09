@@ -5,11 +5,11 @@ function AdminPayments() {
   const { user, isLoaded } = useUser();
   const { getToken } = useAuth();
   const [payments, setPayments] = useState([]);
-
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const fetchPayments = async () => {
     const token = await getToken();
 
-    const res = await fetch("http://localhost:8080/api/admin/pending", {
+    const res = await fetch(`${API_BASE_URL}/api/admin/pending`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -57,7 +57,7 @@ function AdminPayments() {
     const token = await getToken();
 
     await fetch(
-      `http://localhost:8080/api/admin/verify/id/${id}`,
+      `${API_BASE_URL}/api/admin/verify/id/${id}`,
       {
         method: "POST",
         headers: {

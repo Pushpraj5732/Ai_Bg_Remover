@@ -10,6 +10,7 @@ function BuyCredits() {
   const [open, setOpen] = useState(false);
   const [txnId, setTxnId] = useState("");
   const [referenceCode, setReferenceCode] = useState("");
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     if (open) {
@@ -23,7 +24,7 @@ function BuyCredits() {
       return;
     }
 
-    await fetch("http://localhost:8080/api/pay/manual", {
+    await fetch(`${API_BASE_URL}/api/pay/manual`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

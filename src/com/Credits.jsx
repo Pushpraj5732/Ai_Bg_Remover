@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 
 function Credits({ clerkUserId }) {
   const [credits, setCredits] = useState(null);
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   // ✅ 1️⃣ CREATE USER ON FIRST LOGIN
   useEffect(() => {
     if (!clerkUserId) return;
 
-    fetch(`http://localhost:8080/api/credits/create/${clerkUserId}`, {
+    fetch(`${API_BASE_URL}/api/credits/create/${clerkUserId}`, {
       method: "POST",
     }).catch(console.error);
   }, [clerkUserId]);
@@ -16,7 +16,7 @@ function Credits({ clerkUserId }) {
   useEffect(() => {
     if (!clerkUserId) return;
 
-    fetch(`http://localhost:8080/api/credits/${clerkUserId}`)
+    fetch(`${API_BASE_URL}/api/credits/${clerkUserId}`)
       .then(async (res) => {
         if (!res.ok) {
           const err = await res.json();

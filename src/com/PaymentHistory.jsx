@@ -4,11 +4,11 @@ import { useUser } from "@clerk/clerk-react";
 function PaymentHistory() {
   const { user } = useUser();
   const [payments, setPayments] = useState([]);
-
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   useEffect(() => {
     if (!user) return;
 
-    fetch(`http://localhost:8080/api/pay/history/${user.id}`)
+    fetch(`${API_BASE_URL}/api/pay/history/${user.id}`)
       .then(res => res.json())
       .then(data => setPayments(data));
   }, [user]);
