@@ -14,7 +14,7 @@ public class UserCreditController {
         this.userCreditService = userCreditService;
     }
 
-    @PostMapping("/init/{clerkUserId}")
+    @PostMapping("/create/{clerkUserId}")
     public void initUser(@PathVariable String clerkUserId) {
         userCreditService.createUserIfNotExists(clerkUserId);
     }

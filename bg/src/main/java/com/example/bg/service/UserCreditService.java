@@ -1,9 +1,13 @@
 package com.example.bg.service;
 
 import com.example.bg.Res.PrismaRes;
+import com.example.bg.model.PaymentRequest;
 import com.example.bg.model.UserCredit;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class UserCreditService {
@@ -14,7 +18,6 @@ public class UserCreditService {
         this.prismaRes = prismaRes;
     }
 
-    // 1️⃣ Create user with 10 credits
     @Transactional
     public void createUserIfNotExists(String clerkUserId) {
         prismaRes.findByClerkUserId(clerkUserId)
@@ -26,7 +29,6 @@ public class UserCreditService {
                 });
     }
 
-    // 2️⃣ Decrement credit
     @Transactional
     public void decrementCredit(String clerkUserId) {
         UserCredit user = prismaRes.findByClerkUserId(clerkUserId)
@@ -40,7 +42,6 @@ public class UserCreditService {
         prismaRes.save(user);
     }
 
-    // 3️⃣ Increment credits
     @Transactional
     public void addCredits(String clerkUserId, int amount) {
         UserCredit user = prismaRes.findByClerkUserId(clerkUserId)
@@ -50,7 +51,6 @@ public class UserCreditService {
         prismaRes.save(user);
     }
 
-    // 4️⃣ Get credits
     @Transactional
     public int getCredits(String clerkUserId) {
         UserCredit user = prismaRes.findByClerkUserId(clerkUserId)
@@ -63,5 +63,4 @@ public class UserCreditService {
 
         return user.getCredits();
     }
-
 }
